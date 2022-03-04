@@ -1,0 +1,20 @@
+{
+    "primary": {
+        "main": "#FF7D65",
+        "dark": "#FF5536",
+        "light": "#FF9987",
+        "contrastText": "#FFFFFF"
+    },
+    "secondary": {
+        "main": "#FFFFFF"
+    },
+    "text": {
+        "primary": "#333F48",
+        "secondary": "#333F48CC",
+        "disabled": "#C2C6C9",
+        "hint": "#C6A992"
+    },
+    "custom": {
+        "lightGray": "#D9DDE5"
+    }
+}
