@@ -9,20 +9,23 @@ import MapboxClient from '@mapbox/mapbox-sdk'
 import MapboxGeocoding from '@mapbox/mapbox-sdk/services/geocoding'
 import { useConfig } from 'lib/sdk/hooks/useConfig'
 import { useCartStoreState } from 'lib/state/store'
+import { MapType, useAppConfig } from 'lib/state/config'
 
 interface Props {
     onUserLocationChange: (positionCoordinates: PositionCoordinates) => void
 }
 export const GetLocation = ({ onUserLocationChange }: Props) => {
     const { mapboxApiAccessToken } = useConfig()
+    const { getMapType } = useAppConfig()
+    const mapType = getMapType()
     const setIsLocationAccessAllowed = useSetIsLocationAccessAllowed()
     const setIsLocationAccessAnsweredByUser =
         useSetIsLocationAccessAnsweredByUser()
     const setCurrentPositionName = useSetCurrentPositionName()
     const [geocodingClient] = useState(
-        new MapboxGeocoding(
+        !!mapboxApiAccessToken && mapType === MapType.MapBox ? new MapboxGeocoding(
             new MapboxClient({ accessToken: mapboxApiAccessToken })
-        )
+        ) : undefined
     )
     const selectedStore = useCartStoreState()
 
@@ -46,6 +49,9 @@ export const GetLocation = ({ onUserLocationChange }: Props) => {
                         position.coords.latitude,
                     ],
                     types: ['place'],
+                }
+                if (!geocodingClient) {
+                    return
                 }
                 geocodingClient
                     .reverseGeocode(params)

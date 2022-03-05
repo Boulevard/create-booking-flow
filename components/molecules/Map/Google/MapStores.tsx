@@ -15,7 +15,6 @@ export const MapStores = ({ stores }: Props) => {
         center: { lat: globalViewport.latitude, lng: globalViewport.longitude },
         zoom: globalViewport.zoom,
     }
-
     return (
         <>
             <GoogleMapReact

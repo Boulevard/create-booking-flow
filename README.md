@@ -67,5 +67,6 @@ http://localhost:3000?storeId=228
 6. Run the dev server with the following command.
 
 ```
-npm run next:dev
+yarn run next:build
+yarn run next:dev
 ```

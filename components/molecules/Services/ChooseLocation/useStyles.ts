@@ -2,9 +2,13 @@ import { makeStyles } from '@mui/styles'
 import { Theme } from '@mui/material'
 import { stepScreen } from 'constants/styles'
 
+interface LeftStylesProps {
+    displaySearch: boolean
+}
+
 export const useLeftPanelStyles = makeStyles((theme: Theme) => ({
     searchBlock: {
-        height: '108px',
+        height: (props: LeftStylesProps) => props.displaySearch ? '108px' : '56px',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',

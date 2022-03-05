@@ -9,12 +9,15 @@ import { useLeftPanel } from 'components/molecules/Services/ChooseLocation/useLe
 import { GetLocation } from 'components/molecules/GeoLocation'
 import { useLeftPanelStyles } from 'components/molecules/Services/ChooseLocation/useStyles'
 import Font from 'config/fonts.json'
+import { useAppConfig } from 'lib/state/config'
 
 export const LeftPanel = () => {
     const { isMobile } = useMobile()
     const {onSelected, stores, orderStores, onUserLocationChange} = useLeftPanel()
     const [isShowMap] = useIsShowMap()
-    const classes = useLeftPanelStyles({ isMobile })
+    const { isMapAvailable } = useAppConfig()
+    const displaySearch = isMapAvailable()
+    const classes = useLeftPanelStyles({ displaySearch })
     return (
         <Box className={classes.locationBlock}>
             <GetLocation onUserLocationChange={onUserLocationChange} />
@@ -38,6 +41,7 @@ export const LeftPanel = () => {
                 <Box
                     sx={{
                         marginTop: '107px',
+                        height: '260px',
                         backgroundColor: colors.map.backgroundColor,
                     }}
                 >
@@ -47,7 +51,7 @@ export const LeftPanel = () => {
             <Box
                 sx={{
                     height: !isMobile ? 'calc(100% - 108px)' : 'auto',
-                    marginTop: isMobile && !isShowMap ? '107px' : 'auto',
+                    marginTop: isMobile && !isShowMap ? (displaySearch ? '107px' : '67px') : 'auto',
                 }}
             >
                 <StoreList stores={orderStores} />

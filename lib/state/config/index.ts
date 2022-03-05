@@ -63,7 +63,7 @@ export enum DisplayAppSettingsPopup {
 }
 
 export const useAppConfig = () => {
-    const {mapType, flowType, dateTimeType} = useConfig()
+    const {mapType, flowType, dateTimeType, mapboxApiAccessToken, googleMapsApiAccessToken} = useConfig()
     const mapTypeString = useMapTypeState()
     const dateTimeTypeString = useDateTimeTypeState()
     const flowTypeState = useFlowTypeState()
@@ -84,6 +84,16 @@ export const useAppConfig = () => {
         return getValue(mapTypeString, mapType, MapType)
     }
 
+    const isMapAvailable = (): boolean => {
+        const mapType = getMapType()
+        if (mapType === MapType.MapBox) {
+            return !!mapboxApiAccessToken
+        } else if (mapType === MapType.Google) {
+            return !!googleMapsApiAccessToken
+        }
+        return false
+    }
+
     const getDateTimeType = (): DateTimeType => {
         return getValue(
             dateTimeTypeString,
@@ -100,5 +110,6 @@ export const useAppConfig = () => {
         getMapType: getMapType,
         getDateTimeType: getDateTimeType,
         getFlowType: getFlowType,
+        isMapAvailable: isMapAvailable,
     }
 }
