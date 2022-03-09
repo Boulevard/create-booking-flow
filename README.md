@@ -1,10 +1,13 @@
 # Create Booking Flow starter kit
 [![TypeScript](https://badgen.net/badge/icon/typescript?icon=typescript&label)](https://typescriptlang.org)
-[![GitHub license](https://img.shields.io/github/license/Boulevard/create-booking-flow.svg)](https://github.com/Boulevard/create-booking-flow/blob/master/LICENSE)
-[![GitHub release](https://img.shields.io/github/release/Boulevard/create-booking-flow.svg)](https://github.com/Boulevard/create-booking-flow/releases/)
+[![GitHub license](https://img.shields.io/github/license/Boulevard/create-booking-flow)](https://github.com/Boulevard/create-booking-flow/blob/master/LICENSE.md)
+[![GitHub release](https://img.shields.io/github/release/Boulevard/create-booking-flow)](https://github.com/Boulevard/create-booking-flow/releases/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/Boulevard/create-booking-flow/compare)
 
 Create Booking Flow is the easiest way to have a custom booking flow for your [Boulevard](https://joinblvd.com) integration. By just providing basic information, your Business ID and your API Key, you can have this project up and running. This enables you tu customize your Boulevard integration easily, and gives you the power to provide a seamless experience to your end users.
+
+The starter kit has MapBox and Google Maps built in, alongside Google Analytics. It also has 
+multiple flows that control how the user booking flow looks like, and it's all a matter of changing the `env` configuration.
 
 ## Setup and run dev
 
@@ -24,7 +27,7 @@ To setup the project locally follow these steps:
     yarn
     ```
 
-3. To connect to a Boulevard dashboard, manually set the following values in the `.env` file. Reach out to dev-support@blvd.co to retrieve these values. Note: must be a current Boulevard customer.
+3. To connect to a Boulevard dashboard, manually set the following values in the `.env` file. Reach out to dev-support@blvd.co to request a developer sandbox and retrieve these values. Note: must be a current Boulevard customer with an Enterprise license.
 
     Required info:
 
@@ -32,10 +35,13 @@ To setup the project locally follow these steps:
     NEXT_PUBLIC_BLVD_BUSINESS_ID=VALID_ID_HERE
     NEXT_PUBLIC_BLVD_API_KEY=VALID_KEY_HERE
     ```
-    Optional to display map data
+    Optional:
+
     ```dosini
     NEXT_PUBLIC_MAPBOX_TOKEN=VALID_KEY_HERE
     GOOGLE_MAPS_API_KEY_DEVELOPMENT=VALID_KEY_HERE
+    GOOGLE_ANALYTICS_KEY=VALID_KEY_HERE
+    NEXT_PUBLIC_BLVD_PLATFORM=
     ```
 
 4. You can customize a few primary aspects of your booking flow very easily using the App UI settings in the .env file.
@@ -67,6 +73,9 @@ To setup the project locally follow these steps:
 
     You can play with these settings via the UI in the browser. To display a popup in the UI set `NEXT_PUBLIC_DISPLAY_APP_SETTINGS` to `Yes`. Default is `No`
 
+    **4.5.** NEXT_PUBLIC_BLVD_PLATFORM
+
+    This env key controls the API host target. If you set the value to `live` the starter kit will target the Boulevard production API. You need to have production credentials to be able to do this.
 
 5. Ingress point
 
