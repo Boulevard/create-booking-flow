@@ -15,12 +15,12 @@ export const useStyles = makeStyles((theme: Theme) => ({
         cursor: 'pointer',
     },
     cart: {
-        marginLeft: 'auto',
         marginRight: '37px',
         cursor: 'pointer',
     },
     settings: {
         marginLeft: 'auto',
+        marginRight: '37px',
         cursor: 'pointer',
         color: 'black'
     },

@@ -41,10 +41,12 @@ export const Service = ({ bookableItem, handleServiceChange }: Props) => {
         }
     }
 
+    const selected = activeSelectedService?.id === bookableItem.id
+
     return (
         <WithService
             bookableItem={bookableItem}
-            selected={activeSelectedService?.id === bookableItem.id}
+            selected={selected}
             handleChange={handleChange}
             isReadMode={true}
             addRightArrow={true}
@@ -52,13 +54,10 @@ export const Service = ({ bookableItem, handleServiceChange }: Props) => {
             {hasAddons && currentFlowStep.step !== Step.SelectOptions && (
                 <Button
                     variant="contained"
-                    className={classes.removeBtn}
-                    sx={{
-                        marginRight: '10px',
-                    }}
+                    className={classes.editAddOn}
                     onClick={onEditAddonClick}
                 >
-                    Edit Addons
+                    Edit add-ons
                 </Button>
             )}
             <Button

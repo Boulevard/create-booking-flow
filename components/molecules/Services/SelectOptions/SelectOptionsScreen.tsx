@@ -6,6 +6,7 @@ import { useFlowStep } from 'lib/state/booking-flow'
 import { Step } from 'lib/state/booking-flow/types'
 import { WorkshopPanel } from 'components/molecules/Services/SelectOptions/WorkshopPanel'
 import { useMobile } from 'lib/utils/useMobile'
+import { useActiveSelectedService } from 'lib/state/services'
 
 export const SelectOptionsScreen = () => {
     const { setStep } = useFlowStep()
@@ -13,6 +14,8 @@ export const SelectOptionsScreen = () => {
     const onRightPanelBtnClick = async () => {
         await setStep(Step.SelectedServices)
     }
+    const activeSelectedService = useActiveSelectedService()
+    const hasSelectedOptions = activeSelectedService?.selectedOptions && activeSelectedService?.selectedOptions?.length > 0
     return (
         <WithLayout
             isShowLoader={false}
@@ -20,7 +23,7 @@ export const SelectOptionsScreen = () => {
             rightPanel={<RightPanel />}
             showBottom={true}
             rightPanelCaption={isMobile ? '' : 'Select options'}
-            rightPanelBtnCaption="Continue"
+            rightPanelBtnCaption={hasSelectedOptions ? 'Continue' : 'Continue without options'}
             onRightPanelBtnClick={onRightPanelBtnClick}
             workshopPanel={<WorkshopPanel />}
         />

@@ -53,6 +53,7 @@ export const Option = ({ option, bookableItem }: Props) => {
                     durationText={getDurationTextFromNumber(
                         option.durationDelta
                     )}
+                    useBold={true}
                 />
             }
             priceComponent={

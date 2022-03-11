@@ -57,7 +57,7 @@ To setup the project locally follow these steps:
 
     **4.2.** NEXT_PUBLIC_MAP_TYPE
 
-    Use the key `NEXT_PUBLIC_MAP_TYPE` to set a map provider you want to use. Possible values are `MapBox` and `Google`. Default is `MapBox`
+    Use the key `NEXT_PUBLIC_MAP_TYPE` to set a map provider you want to use. Possible values are `MapBox`, `Google` and 'None'. Default is `MapBox`
 
 
     **4.3.** NEXT_PUBLIC_DATE_TIME_TYPE

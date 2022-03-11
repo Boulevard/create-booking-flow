@@ -101,6 +101,7 @@ export const AppSettingsPopper = () => {
                 >
                     <FormControlLabel value={MapType[MapType.MapBox]} control={<Radio />} label="MapBox" />
                     <FormControlLabel value={MapType[MapType.Google]} control={<Radio />} label="Google" />
+                    <FormControlLabel value={MapType[MapType.None]} control={<Radio />} label="None" />
                 </RadioGroup>
             </Box>
 

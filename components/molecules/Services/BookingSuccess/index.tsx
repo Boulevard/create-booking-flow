@@ -1,21 +1,20 @@
-import { Theme, Typography, Grid, Box, Button } from '@mui/material'
+import { Box, Button, Grid, Theme, Typography } from '@mui/material'
 import { theme } from 'styles/theme'
 import { makeStyles } from '@mui/styles'
 import formatDateFns, { cartTimeToDate } from 'lib/utils/formatDateFns'
 import getTimeZoneAbbr from 'lib/utils/getTimeZoneAbbr'
 import { stepScreen } from 'constants/styles'
-import {
-    appExternalUrl,
-    getAddress,
-    getLocationName,
-    getNavigationUrl,
-} from 'lib/utils/locationUtils'
+import { appExternalUrl, getAddress, getLocationName, getNavigationUrl, } from 'lib/utils/locationUtils'
 import { SelectedStoreMap } from 'components/molecules/Map/Mapbox/SelectedStoreMap'
 import { useCartMethods, useSuccessBookingCartInfoState } from 'lib/state/cart'
 import { useMobile } from 'lib/utils/useMobile'
 import { usePersonalInformationState } from 'lib/state/personal-info'
 import { useSelectedServices } from 'lib/state/services'
 import { useCartBookableItemListStaff } from 'lib/state/staff'
+import { MapType, useAppConfig } from 'lib/state/config'
+import { SelectedStoreMapGoogle } from 'components/molecules/Map/Google/SelectedStoreMapGoogle'
+import { useConfig } from 'lib/sdk/hooks/useConfig'
+
 interface StylesProps {
     isMobile: boolean
 }
@@ -48,6 +47,10 @@ export default function BookingSuccess() {
     const selectedServicesName = selectedServicesStateValue.map(
         (service) => service.item.name
     )
+    const { getMapType } = useAppConfig()
+    const mapType = getMapType()
+    const { googleMapsApiAccessToken, mapboxApiAccessToken } = useConfig()
+
     const cartBookableItemListStaff = useCartBookableItemListStaff()
 
     const onContinueShopping = () => {
@@ -110,10 +113,15 @@ export default function BookingSuccess() {
                                         width: !isMobile ? 'auto' : 200,
                                     }}
                                 >
-                                    <SelectedStoreMap
-                                        isShowStorePopup={false}
-                                        markerSize="33px"
-                                    />
+                                    {!!mapboxApiAccessToken && mapType === MapType.MapBox &&
+                                        <SelectedStoreMap
+                                            isShowStorePopup={false}
+                                            markerSize="33px"
+                                        />
+                                    }
+                                    {!!googleMapsApiAccessToken && mapType === MapType.Google
+                                        && <SelectedStoreMapGoogle/>
+                                    }
                                 </Box>
                             </Grid>
                             <Grid

@@ -2,7 +2,6 @@ import {
     atom,
     useRecoilCallback,
     useRecoilValue,
-    useResetRecoilState,
     useSetRecoilState,
 } from 'recoil'
 import { getPersistedState, makePersistedSetRecoilState } from '../persistence'
@@ -94,7 +93,6 @@ export const cartDataLoaded = atom<boolean>({
 
 export const useCartState = () => useRecoilValue(cartState)
 export const useSetCartState = () => useSetRecoilState(cartState)
-export const useResetCartState = () => useResetRecoilState(cartState)
 
 export const useCartIdState = () => useRecoilValue(cartIdState)
 export const useSetCartIdState = makePersistedSetRecoilState(
@@ -134,7 +132,7 @@ export const useCartMethods = () => {
     const { getMapViewportState } = useMapView()
     const setViewport = useSetMapViewportState()
     const setAvailableCategories = useSetAvailableCategories()
-    const { loadSelectedServicesFromCart, reverseSelectedServices } =
+    const { loadSelectedServicesFromCart, reverseSelectedServices, selectedCartAvailableItemsStateValue, setSelectedCartAvailableItemsState } =
         useSelectedServices()
     const setActiveSelectedService = useSetActiveSelectedService()
     const setBookableStaffVariants = useSetBookableStaffVariants()
@@ -157,15 +155,17 @@ export const useCartMethods = () => {
     }
 
     const addRemoveServiceCommon = async (
-        cart: Cart
+        cart: Cart,
+        selectedCartAvailableItems : CartAvailableItem[]
     ): Promise<CartServices> => {
         setCart(cart)
-        const services = await loadSelectedServicesFromCart(cart)
+        const services = await loadSelectedServicesFromCart(cart, selectedCartAvailableItems)
         resetStaffDatesStore()
         resetStaffTimesState()
         resetSelectedStaffTimeState()
         return { cart, services }
     }
+
     const addService = async (
         cart: Cart,
         availableItem: CartAvailableItem
@@ -175,7 +175,9 @@ export const useCartMethods = () => {
         } else {
             cart = await cart.addBookableItem(availableItem as CartAvailableBookableItem)
         }
-        return await addRemoveServiceCommon(cart)
+        const selectedCartAvailableItems = selectedCartAvailableItemsStateValue.concat(availableItem)
+        setSelectedCartAvailableItemsState(selectedCartAvailableItems)
+        return await addRemoveServiceCommon(cart, selectedCartAvailableItems)
     }
 
     const removeService = async (
@@ -183,7 +185,18 @@ export const useCartMethods = () => {
         bookableItem: CartBookableItem
     ): Promise<CartServices> => {
         cart = await cart.removeSelectedItem(bookableItem)
-        return await addRemoveServiceCommon(cart)
+        const selectedCartAvailableItems : CartAvailableItem[] = []
+        let wasFound = false
+        for (let item of selectedCartAvailableItemsStateValue) {
+            if (!wasFound && item.id === bookableItem.id) {
+                wasFound = true
+                continue
+            }
+
+            selectedCartAvailableItems.push(item)
+        }
+        setSelectedCartAvailableItemsState(selectedCartAvailableItems)
+        return await addRemoveServiceCommon(cart, selectedCartAvailableItems)
     }
 
     const addAddon = async (
@@ -196,7 +209,7 @@ export const useCartMethods = () => {
             options: [...options, option],
             staffVariant: bookableItem.selectedStaffVariant,
         })
-        return await addRemoveServiceCommon(cart)
+        return await addRemoveServiceCommon(cart, selectedCartAvailableItemsStateValue)
     }
 
     const removeAddon = async (
@@ -208,7 +221,7 @@ export const useCartMethods = () => {
         cart = await bookableItem.update({
             options: [...options.filter((opt) => opt.id !== option.id)],
         })
-        return await addRemoveServiceCommon(cart)
+        return await addRemoveServiceCommon(cart, selectedCartAvailableItemsStateValue)
     }
 
     const selectStaff = async (
@@ -220,7 +233,7 @@ export const useCartMethods = () => {
             options: bookableItem.selectedOptions,
             staffVariant: staff?.staffVariant ?? { id: null },
         })
-        return await addRemoveServiceCommon(cart)
+        return await addRemoveServiceCommon(cart, selectedCartAvailableItemsStateValue)
     }
 
     const setLocationBasedElements = async (
@@ -408,7 +421,7 @@ export const useCartMethods = () => {
         cart: Cart,
         availableCategories: CartAvailableCategory[]
     ) => {
-        const servicesFromCart = await loadSelectedServicesFromCart(cart)
+        const servicesFromCart = await loadSelectedServicesFromCart(cart, [])
         const { selectedCartAvailableCategory } =
             getSelectedCartAvailableCategoryFromSelectedServices(
                 servicesFromCart,
@@ -464,7 +477,7 @@ export const useCartMethods = () => {
                 localAvailableBookableItemStores.push({
                     availableBookableItemId: availableBookableItem.id,
                     cartAvailableBookableItemLocationVariant:
-                        itemLocationVariants,
+                    itemLocationVariants,
                 } as AvailableBookableItemStores)
             }
             if (locations === undefined) {
@@ -517,10 +530,13 @@ export const useCartMethods = () => {
             newCart = await newCart.setLocation(selectedStore.location)
         }
 
+        let selectedCartAvailableItems = selectedCartAvailableItemsStateValue
         if (lastSelectedItem) {
             newCart = await newCart.addBookableItem(lastSelectedItem)
+            selectedCartAvailableItems = selectedCartAvailableItems.concat(lastSelectedItem)
+            setSelectedCartAvailableItemsState(selectedCartAvailableItems)
         }
-        return await loadSelectedServicesFromCart(newCart)
+        return await loadSelectedServicesFromCart(newCart, selectedCartAvailableItems)
     }
 
     return {

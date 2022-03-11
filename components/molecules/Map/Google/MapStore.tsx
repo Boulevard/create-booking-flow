@@ -8,7 +8,7 @@ import { useLocationSelectedStoreState } from 'lib/state/location'
 import { scrollIntoStore } from 'components/molecules/Map/helper'
 
 interface Props {
-    store: StoreType
+    store?: StoreType|undefined
     lat: number
     lng: number
 }
@@ -18,6 +18,10 @@ export const MapStore = ({ store }: Props) => {
         useLocationSelectedStoreState()
 
     const onSelectClick = async (event?) => {
+        if (!store) {
+            return
+        }
+
         event?.preventDefault()
         setLocationSelectedStore(store)
         scrollIntoStore(isMobile, store)
@@ -30,7 +34,7 @@ export const MapStore = ({ store }: Props) => {
     }
     return (
         <>
-            {locationSelectedStore?.location.id === store.location.id && (
+            {store && locationSelectedStore?.location.id === store.location.id && (
                 <MapStoreInfoWindow
                     store={store}
                     closePopup={closeStorePopup}

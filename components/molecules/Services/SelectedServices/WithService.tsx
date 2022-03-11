@@ -39,7 +39,7 @@ export const WithService = ({
         >
             <Box>
                 <Box className={classes.summaryWrapper}>
-                    <ServiceCartBookableItemCaption bookableItem={bookableItem} />
+                    <ServiceCartBookableItemCaption bookableItem={bookableItem} useBold={selected === true} />
                     <ServicePrice bookableItem={bookableItem.item} />
                 </Box>
                 <SelectedOptions

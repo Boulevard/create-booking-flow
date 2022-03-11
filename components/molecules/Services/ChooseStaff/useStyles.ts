@@ -115,6 +115,12 @@ export const useStaffListStyles = makeStyles(() => ({
         marginTop: '10px',
         marginRight: '10px',
     },
+    noOptionsAvailableWrapper: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: '15%',
+    },
 }))
 
 export const useSelectedButton = makeStyles(() => ({

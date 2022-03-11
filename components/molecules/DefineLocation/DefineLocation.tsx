@@ -33,6 +33,7 @@ export const DefineLocation = ({
     const placeholder = !isMobile
         ? 'C\u2063ity or Z\u2063ip c\u2063ode'
         : 'Enter a c\u2063ity or z\u2063ip c\u2063ode'
+    const isEmpty = getValue() === ''
     return (
         <Box>
             <Paper component="form" className={classes.paper}>
@@ -54,7 +55,7 @@ export const DefineLocation = ({
                             margin: 'auto',
                         }}
                     >
-                        <Box
+                        {!isEmpty && <Box
                             sx={{
                                 cursor: 'pointer',
                                 textDecoration: 'underline',
@@ -64,7 +65,7 @@ export const DefineLocation = ({
                             onClick={clear}
                         >
                             {isMobile ? <SearchClear /> : 'Clear'}
-                        </Box>
+                        </Box>}
                     </Box>
                 </Box>
                 <StyledButton onClick={onSearchClick}>

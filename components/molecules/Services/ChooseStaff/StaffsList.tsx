@@ -1,6 +1,6 @@
 import { Staff } from 'components/molecules/Services/ChooseStaff/Staff'
 import { useBookableStaffVariants } from 'lib/state/staff'
-import { Box } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import { useStaffListStyles } from 'components/molecules/Services/ChooseStaff/useStyles'
 import { useCartMethods } from 'lib/state/cart'
 import { useActiveSelectedService } from 'lib/state/services'
@@ -21,11 +21,18 @@ export const StaffsList = () => {
         staffs = staffsWithNoPreference
     }
 
+    const hasStaff = staffs && staffs.length > 0
+
     return (
         <Box className={classes.root}>
             {staffs?.map((staff) => (
                 <Staff key={staff.id} staff={staff} />
             ))}
+            {!hasStaff && <Box className={classes.noOptionsAvailableWrapper}>
+                <Typography>
+                    No options available
+                </Typography>
+            </Box>}
         </Box>
     )
 }

@@ -45,7 +45,6 @@ export const useStyles = makeStyles((theme: Theme) => ({
     },
 
     cardItemName: {
-        fontWeight: 'bold',
         marginRight: '5px',
     },
 

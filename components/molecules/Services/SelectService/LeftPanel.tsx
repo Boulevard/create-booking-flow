@@ -40,7 +40,7 @@ export const LeftPanel = ({
                     component="span"
                     fontFamily={Font.headings_family}
                 >
-                    {isAnyServiceExist ? 'Select a service option' : 'Select an item'}
+                    {isAnyServiceExist ? 'Select a service' : 'Select an item'}
                 </Typography>
                 <Box sx={{ mt: 1 }}>
                     <ServiceSearch

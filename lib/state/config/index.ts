@@ -45,6 +45,7 @@ export const useSetFlowTypeState = makePersistedSetRecoilState(
 export enum MapType {
     MapBox = 0,
     Google = 1,
+    None = 2,
 }
 
 export enum DateTimeType {

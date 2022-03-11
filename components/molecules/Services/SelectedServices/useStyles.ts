@@ -1,12 +1,11 @@
 import { makeStyles } from '@mui/styles'
 import { colors } from 'constants/colors'
-import { Colors } from 'enums/colors'
 
 export const useSelectedServicesScreenStyles = makeStyles(() => ({
     servicesRoot: {
         paddingTop: '1px',
         paddingBottom: '1px',
-        height: 'calc(100% - 93px)',
+        height: 'calc(100% - 117px)',
     },
 }))
 
@@ -88,17 +87,6 @@ export const useAvailableServiceOptionStyles = makeStyles(() => ({
     },
 }))
 
-export const useSelectedServicesStyles = makeStyles(() => ({
-    root: {
-        overflowY: 'scroll',
-        position: 'sticky',
-        height: 'calc(100% - 60px)',
-        '&::-webkit-scrollbar': {
-            display: 'none',
-        },
-    },
-}))
-
 export const useServiceStyles = makeStyles(() => ({
     serviceNameText: {
         fontWeight: 700,
@@ -131,6 +119,15 @@ export const useServiceStyles = makeStyles(() => ({
         fontWeight: 500,
         textTransform: 'capitalize',
         marginTop: '16px',
+    },
+    editAddOn: {
+        width: 'auto',
+        height: 38,
+        fontSize: '16px',
+        fontWeight: 500,
+        marginTop: '16px',
+        marginRight: '10px',
+        textTransform: 'none',
     },
 }))
 

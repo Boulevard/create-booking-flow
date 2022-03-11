@@ -14,6 +14,7 @@ import { useCartMethods, useCartState } from 'lib/state/cart'
 import { useFlowStep } from 'lib/state/booking-flow'
 import { FlowType, useAppConfig } from 'lib/state/config'
 import { Step } from 'lib/state/booking-flow/types'
+import { CartAvailableItem } from '@boulevard/blvd-book-sdk/lib/carts/items'
 
 export const availableCategoriesState = atom<CartAvailableCategory[]>({
     key: 'availableCategories',
@@ -22,13 +23,18 @@ export const availableCategoriesState = atom<CartAvailableCategory[]>({
 
 export const selectedCartAvailableCategoryState = atom<
     CartAvailableCategory | undefined
->({
+    >({
     key: 'selectedCartAvailableCategoryState',
     default: undefined,
 })
 
 export const selectedServicesState = atom<CartBookableItem[]>({
     key: 'selectedServicesState',
+    default: [],
+})
+
+export const selectedCartAvailableItemsState = atom<CartAvailableItem[]>({
+    key: 'selectedCartAvailableItemsState',
     default: [],
 })
 
@@ -39,7 +45,7 @@ export const activeSelectedServiceState = atom<CartBookableItem | undefined>({
 
 export const lastSelectedBookableItem = atom<
     CartAvailableBookableItem | undefined
->({
+    >({
     key: 'lastSelectedBookableItem',
     default: undefined,
 })
@@ -73,27 +79,61 @@ export const useSelectedServices = () => {
     const setSelectedServicesStateValue = useSetRecoilState(
         selectedServicesState
     )
+    const selectedCartAvailableItemsStateValue = useRecoilValue(selectedCartAvailableItemsState)
+    const setSelectedCartAvailableItemsState = useSetRecoilState(selectedCartAvailableItemsState)
 
     const reverseSelectedServices = (selectedServies: CartBookableItem[]) => {
         return selectedServies.concat().reverse()
     }
 
     const loadSelectedServicesFromCart = async (
-        cart: Cart
+        cart: Cart,
+        selectedCartAvailableItems : CartAvailableItem[]
     ): Promise<CartBookableItem[]> => {
         const selectedItems = await cart.getSelectedItems()
         const cartBookableItems = selectedItems.map((x) => {
             return x as CartBookableItem
         })
-        setSelectedServicesStateValue(cartBookableItems)
-        return cartBookableItems
+
+        // We shouldn’t rely on the ordering of the items
+        // returned by getSelectedItems - that ordering is not guaranteed and can change at any point in the future.
+        // Sort items based on selectedCartAvailableItems.
+
+        const usedIndexes : number[] = []
+        const sortedCartBookableItems : CartBookableItem[] = []
+        for (let availableItem of selectedCartAvailableItems) {
+            for (let i = 0; i < cartBookableItems.length; i++) {
+                const selectedItem = cartBookableItems[i]
+                if (selectedItem.item.id === availableItem.id && usedIndexes.find(x=>x === i) === undefined) {
+                    sortedCartBookableItems.push(selectedItem)
+                    usedIndexes.push(i)
+                    break
+                }
+            }
+        }
+
+        // We don't want to miss any element returned by server even it's available item is not in the selectedCartAvailableItems for some reason.
+        for (let cartBookableItem of cartBookableItems) {
+            if (sortedCartBookableItems.find(x=>x.id === cartBookableItem.id) === undefined) {
+                sortedCartBookableItems.push(cartBookableItem)
+            }
+        }
+
+        setSelectedServicesStateValue(sortedCartBookableItems)
+        if (sortedCartBookableItems.length === 0) {
+            setSelectedCartAvailableItemsState([])
+        } else if (selectedCartAvailableItemsStateValue.length === 0) {
+            setSelectedCartAvailableItemsState(sortedCartBookableItems.map(x=>x.item))
+        }
+        return sortedCartBookableItems
     }
 
     return {
         selectedServicesStateValue: selectedServicesStateValue,
-        setSelectedServicesStateValue: setSelectedServicesStateValue,
         loadSelectedServicesFromCart: loadSelectedServicesFromCart,
         reverseSelectedServices: reverseSelectedServices,
+        selectedCartAvailableItemsStateValue: selectedCartAvailableItemsStateValue,
+        setSelectedCartAvailableItemsState: setSelectedCartAvailableItemsState,
     }
 }
 

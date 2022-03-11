@@ -47,14 +47,15 @@ export const SelectStore = ({ store }: Props) => {
     const flowType = getFlowType()
     const cart = useCartState()
     const cartStore = useCartStoreState()
-    const { selectedServicesStateValue } = useSelectedServices()
+    const { selectedServicesStateValue, loadSelectedServicesFromCart } = useSelectedServices()
     const lastSelectedBookableItem = useLastSelectedBookableItem()
     const resetLastSelectedBookableItem = useResetLastSelectedBookableItem()
     const layout = useContext(LayoutContext)
 
     const continueSelectLocationFirst = async () => {
         const location = store?.location
-        await createCart(location, store)
+        const cart = await createCart(location, store)
+        await loadSelectedServicesFromCart(cart, [])
         await setStep(Step.SelectService)
     }
 

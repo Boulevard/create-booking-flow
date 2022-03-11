@@ -93,9 +93,10 @@ export const MobileAddAnotherService = ({
                         onClick={onEditAddonClick}
                         sx={{
                             width: 'auto',
+                            textTransform: 'none',
                         }}
                     >
-                        Edit Addons
+                        Edit add-ons
                     </Button>
                 )}
             </Box>
