@@ -9,9 +9,9 @@
   <p align="center">
     <a href="https://abundant.joinblvd.com/">View Demo</a>
     ·
-    <a href="https://github.com/Boulevard/create-booking-flow/issues">Report Bug</a>
+    <a href="https://github.com/Boulevard/create-booking-flow/issues">Report a Bug</a>
     ·
-    <a href="https://github.com/Boulevard/create-booking-flow/issues">Request Feature</a>
+    <a href="https://github.com/Boulevard/create-booking-flow/issues">Request a Feature</a>
   </p>
 </div>
 
