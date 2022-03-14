@@ -7,8 +7,6 @@
   <h2 align="center">Create Booking Flow starter kit</h2>
 
   <p align="center">
-    <a href="https://abundant.joinblvd.com/">View Demo</a>
-    ·
     <a href="https://github.com/Boulevard/create-booking-flow/issues">Report a Bug</a>
     ·
     <a href="https://github.com/Boulevard/create-booking-flow/issues">Request a Feature</a>
