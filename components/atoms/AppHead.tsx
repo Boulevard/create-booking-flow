@@ -36,7 +36,7 @@ export const AppHead = () => {
 
     return (
         <Head>
-            <title>Abundant Salon - Booking</title>
+            <title>Salon - Booking</title>
             {/* SEO */}
             <meta itemProp="name" content={Brand.name} />
             <meta itemProp="description" content={Brand.description} />

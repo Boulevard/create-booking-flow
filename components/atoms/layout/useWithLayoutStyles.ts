@@ -83,6 +83,8 @@ export const useWithLayoutStyles = makeStyles((theme: Theme) => ({
         fontWeight: 500,
         marginLeft: 'auto',
         marginRight: 'auto',
+        marginTop: 'auto',
+        marginBottom: 'auto',
     },
     loader: stepScreen(theme).loader,
     blurScreen: stepScreen(theme).blurScreen,

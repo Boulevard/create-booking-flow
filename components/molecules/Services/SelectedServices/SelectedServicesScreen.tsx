@@ -7,7 +7,7 @@ import { Step } from 'lib/state/booking-flow/types'
 import { RightPanel } from 'components/molecules/Services/SelectedServices/RightPanel'
 import { WorkshopPanel } from 'components/molecules/Services/SelectedServices/WorkshopPanel'
 import { useCartMethods } from 'lib/state/cart'
-import { useActiveSelectedService, useSelectedServices } from 'lib/state/services'
+import { useSelectedServices } from 'lib/state/services'
 import { useSelectedServiceChange } from 'components/molecules/Services/SelectedServices/useSelectedServiceChange'
 import { useMobile } from 'lib/utils/useMobile'
 
@@ -16,7 +16,6 @@ export const SelectedServicesScreen = () => {
     const { setStep } = useFlowStep()
     const { isMobile } = useMobile()
     const {isCartAvailableBookableItem} = useCartMethods()
-    const activeSelectedService = useActiveSelectedService()
     const {handleServiceChange} = useSelectedServiceChange()
     const { selectedServicesStateValue } = useSelectedServices()
     const hasServices = selectedServicesStateValue.filter(x=>isCartAvailableBookableItem(x.item)).length > 0
@@ -24,7 +23,7 @@ export const SelectedServicesScreen = () => {
     if (isMobile) {
         rightPanelCaption = ''
     } else if (hasServices) {
-        rightPanelCaption = !isMobile && isCartAvailableBookableItem(activeSelectedService?.item) ? 'Select a specialist' : ''
+        rightPanelCaption = 'Select a specialist'
     }
 
     const onLeftPanelBtnClick = async () => {
