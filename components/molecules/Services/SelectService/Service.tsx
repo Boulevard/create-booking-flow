@@ -19,6 +19,8 @@ interface Props {
 export const Service = ({ bookableItem }: Props) => {
     const classes = useServiceStyles()
     const cart = useCartState()
+    cart?.addBookableItem(bookableItem)
+    console.log(cart)
     const { addService, loadSelectedServices, loadStoresForCartBookableItems, isCartAvailableBookableItem } =
         useCartMethods()
     const { setStep } = useFlowStep()
