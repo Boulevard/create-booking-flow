@@ -153,6 +153,7 @@ export const CartDefinition = () => {
             availableCategories
         )
         await loadSelectedStaff(selectedItems)
+
         return {
             cartLocation: {
                 cart,
@@ -187,6 +188,7 @@ export const CartDefinition = () => {
         cartLocation = info.cartLocation
         locations = info.locations
         const selectedServices = info.selectedServices
+
         let step: Step
         if (cartLocation) {
             const { cart, location } = cartLocation

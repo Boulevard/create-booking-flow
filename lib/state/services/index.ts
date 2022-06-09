@@ -15,7 +15,6 @@ import { useFlowStep } from 'lib/state/booking-flow'
 import { FlowType, useAppConfig } from 'lib/state/config'
 import { Step } from 'lib/state/booking-flow/types'
 import { CartAvailableItem } from '@boulevard/blvd-book-sdk/lib/carts/items'
-import { PlatformClient } from '@boulevard/blvd-book-sdk/lib/platformClient'
 
 export const availableCategoriesState = atom<CartAvailableCategory[]>({
     key: 'availableCategories',
