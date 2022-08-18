@@ -106,6 +106,7 @@ export const SelectDate = ({ onDayClick, filteredDate }: Props) => {
     const { loadStaffDates, getStaffDateState } = useStaffDates()
     const staffDatesStore = getStaffDateState()
     const weekdaysShort = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
+    const [refresher, setRefresher] = useState(0)
     const onMonthChange = async (date: Date) => {
         setDisplayedMonth(date)
         await loadStaffDates(
@@ -114,6 +115,7 @@ export const SelectDate = ({ onDayClick, filteredDate }: Props) => {
             cartState,
             cartStoreState?.location.tz
         )
+        setRefresher(refresher + 1) //that forces the control to be refreshed and display available dates
     }
 
     const getAllowedDaysInMonth = (day: Date) => {
