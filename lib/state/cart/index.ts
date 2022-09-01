@@ -255,8 +255,8 @@ export const useCartMethods = () => {
         const updatedViewPort = {
             ...viewport,
             ...{
-                longitude: locationStore.location.coordinates.longitude,
-                latitude: locationStore.location.coordinates.latitude,
+                longitude: locationStore.location.coordinates?.longitude ?? 0,
+                latitude: locationStore.location.coordinates?.latitude ?? 0,
                 zoom: defaultZoom,
                 transitionDuration: mapBoxTransitionDuration,
                 transitionInterpolator: mapBoxFlyToInterpolator,
