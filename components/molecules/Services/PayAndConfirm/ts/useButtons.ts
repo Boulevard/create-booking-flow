@@ -14,6 +14,7 @@ import { useErrorMessageType } from 'lib/state/error'
 import { ErrorType } from 'lib/state/error/enums'
 import { LayoutContext } from 'components/atoms/layout/LayoutContext'
 import { Blvd } from 'lib/sdk/blvd'
+import { add } from 'date-fns'
 
 export const useButtons = () => {
     const { setStep } = useFlowStep()
@@ -40,6 +41,10 @@ export const useButtons = () => {
         return Number(expirationDate.substring(3, 5))
     }
 
+    const getAddressPostalCode = (addressPostalCode: string) => {
+        return addressPostalCode.trim()
+    }
+
     const onContinue = async (values: FormikValues) => {
         layout.setIsShowLoader(true)
 
@@ -56,6 +61,9 @@ export const useButtons = () => {
                         cvv: values.cvc,
                         exp_month: getExpirationMonth(values.expirationDate),
                         exp_year: getExpirationYear(values.expirationDate),
+                        address_postal_code: getAddressPostalCode(
+                            values.addressPostalCode
+                        ),
                     },
                 })
                 const checkoutCartPayload = await cart?.checkout()
