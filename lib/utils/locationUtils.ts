@@ -22,7 +22,9 @@ export const scrollMapToTop = () => {
     window.scrollTo(0, 0)
 }
 
-export const getStateOrProvince = (location: Location | undefined): string => {
+export const getStateOrProvince = (
+    location: Location | undefined
+): string | undefined => {
     if (location?.address.country === countryCanadaShort) {
         return location.address.province
     }

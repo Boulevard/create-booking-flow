@@ -126,8 +126,9 @@ export const CartDefinition = () => {
     }
 
     const loadCartInternal = async (): Promise<Info> => {
-        const urlParams = getUrlParams()
+        if (!cartIdState) throw new TypeError('cartIdState must be present')
 
+        const urlParams = getUrlParams()
         const cart = await Blvd.carts.get(cartIdState)
         setPersonalInformationState(getPersonalInformation(cart))
         loadBookingAnswers(cart)
