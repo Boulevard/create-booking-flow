@@ -7,6 +7,7 @@ import TextFieldBase from 'components/atoms/formik/TextFieldBase'
 import {
     expirationDateFieldName,
     cvcFieldName,
+    addressPostalCodeFieldName,
 } from '../PayAndConfirm/ts/constants'
 
 // eslint-disable-next-line react/display-name
@@ -60,6 +61,21 @@ export default function ExpirationCVCAndZipcode() {
                         errors[cvcFieldName] &&
                         touched[cvcFieldName] &&
                         errors[cvcFieldName]
+                    }
+                />
+            </Grid>
+            <Grid item lg={2} md={5} sm={5} xs={6}>
+                <TextFieldBase
+                    id={addressPostalCodeFieldName}
+                    label="Postal Code"
+                    error={
+                        errors[addressPostalCodeFieldName] &&
+                        touched[addressPostalCodeFieldName]
+                    }
+                    helperText={
+                        errors[addressPostalCodeFieldName] &&
+                        touched[addressPostalCodeFieldName] &&
+                        errors[addressPostalCodeFieldName]
                     }
                 />
             </Grid>

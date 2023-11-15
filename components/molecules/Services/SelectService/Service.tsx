@@ -19,8 +19,12 @@ interface Props {
 export const Service = ({ bookableItem }: Props) => {
     const classes = useServiceStyles()
     const cart = useCartState()
-    const { addService, loadSelectedServices, loadStoresForCartBookableItems, isCartAvailableBookableItem } =
-        useCartMethods()
+    const {
+        addService,
+        loadSelectedServices,
+        loadStoresForCartBookableItems,
+        isCartAvailableBookableItem,
+    } = useCartMethods()
     const { setStep } = useFlowStep()
     const cartStore = useCartStoreState()
     const layout = useContext(LayoutContext)
@@ -65,11 +69,17 @@ export const Service = ({ bookableItem }: Props) => {
         }
     }
 
-    const btnName = hasOptions ? 'Select options' : isCartAvailableBookableItem(bookableItem) ? 'Select specialist' : 'Select'
+    const btnName = hasOptions
+        ? 'Select options'
+        : isCartAvailableBookableItem(bookableItem)
+        ? 'Select specialist'
+        : 'Select'
 
     return (
         <SelectableListItem
-            captionComponent={<ServiceAvailableBookableItem bookableItem={bookableItem} />}
+            captionComponent={
+                <ServiceAvailableBookableItem bookableItem={bookableItem} />
+            }
             priceComponent={
                 <ServicePrice
                     bookableItem={bookableItem}

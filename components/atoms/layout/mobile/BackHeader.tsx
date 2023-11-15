@@ -4,7 +4,7 @@ import { ArrowLeft } from 'components/icons/ArrowLeft'
 
 interface Props {
     onClick: () => void
-    caption: string
+    caption?: string
 }
 
 export const BackHeader = ({ onClick, caption }: Props) => {

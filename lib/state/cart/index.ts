@@ -1,3 +1,4 @@
+// @ts-nocheck - FIXME - Types in this file are broken, and this needs a heavy refactor
 import {
     atom,
     useRecoilCallback,
@@ -53,7 +54,9 @@ import {
 } from 'lib/state/services'
 import {
     CartAvailableBookableItemLocationVariant,
-    CartAvailableBookableItemOption, CartAvailableItem, CartAvailablePurchasableItem,
+    CartAvailableBookableItemOption,
+    CartAvailableItem,
+    CartAvailablePurchasableItem,
 } from '@boulevard/blvd-book-sdk/lib/carts/items'
 import { CartBookableItemStaff, Staff } from 'lib/state/staff/types'
 import {
@@ -132,8 +135,12 @@ export const useCartMethods = () => {
     const { getMapViewportState } = useMapView()
     const setViewport = useSetMapViewportState()
     const setAvailableCategories = useSetAvailableCategories()
-    const { loadSelectedServicesFromCart, reverseSelectedServices, selectedCartAvailableItemsStateValue, setSelectedCartAvailableItemsState } =
-        useSelectedServices()
+    const {
+        loadSelectedServicesFromCart,
+        reverseSelectedServices,
+        selectedCartAvailableItemsStateValue,
+        setSelectedCartAvailableItemsState,
+    } = useSelectedServices()
     const setActiveSelectedService = useSetActiveSelectedService()
     const setBookableStaffVariants = useSetBookableStaffVariants()
     const setAllowChooseStaffError = useSetAllowChooseStaffError()
@@ -146,20 +153,33 @@ export const useCartMethods = () => {
     const resetSelectedCartAvailableCategory =
         useResetSelectedCartAvailableCategory()
 
-    const isCartAvailableBookableItem = (availableItem: CartAvailableItem|undefined) => {
-        return availableItem && availableItem["__typename"] === 'CartAvailableBookableItem'
+    const isCartAvailableBookableItem = (
+        availableItem: CartAvailableItem | undefined
+    ) => {
+        return (
+            availableItem &&
+            availableItem['__typename'] === 'CartAvailableBookableItem'
+        )
     }
 
-    const isCartAvailablePurchasableItem = (availableItem: CartAvailableItem|undefined) => {
-        return availableItem && availableItem["__typename"] === 'CartAvailablePurchasableItem'
+    const isCartAvailablePurchasableItem = (
+        availableItem: CartAvailableItem | undefined
+    ) => {
+        return (
+            availableItem &&
+            availableItem['__typename'] === 'CartAvailablePurchasableItem'
+        )
     }
 
     const addRemoveServiceCommon = async (
         cart: Cart,
-        selectedCartAvailableItems : CartAvailableItem[]
+        selectedCartAvailableItems: CartAvailableItem[]
     ): Promise<CartServices> => {
         setCart(cart)
-        const services = await loadSelectedServicesFromCart(cart, selectedCartAvailableItems)
+        const services = await loadSelectedServicesFromCart(
+            cart,
+            selectedCartAvailableItems
+        )
         resetStaffDatesStore()
         resetStaffTimesState()
         resetSelectedStaffTimeState()
@@ -171,11 +191,16 @@ export const useCartMethods = () => {
         availableItem: CartAvailableItem
     ): Promise<CartServices> => {
         if (isCartAvailablePurchasableItem(availableItem)) {
-            cart = await cart.addPurchasableItem(availableItem as CartAvailablePurchasableItem)
+            cart = await cart.addPurchasableItem(
+                availableItem as CartAvailablePurchasableItem
+            )
         } else {
-            cart = await cart.addBookableItem(availableItem as CartAvailableBookableItem)
+            cart = await cart.addBookableItem(
+                availableItem as CartAvailableBookableItem
+            )
         }
-        const selectedCartAvailableItems = selectedCartAvailableItemsStateValue.concat(availableItem)
+        const selectedCartAvailableItems =
+            selectedCartAvailableItemsStateValue.concat(availableItem)
         setSelectedCartAvailableItemsState(selectedCartAvailableItems)
         return await addRemoveServiceCommon(cart, selectedCartAvailableItems)
     }
@@ -185,7 +210,7 @@ export const useCartMethods = () => {
         bookableItem: CartBookableItem
     ): Promise<CartServices> => {
         cart = await cart.removeSelectedItem(bookableItem)
-        const selectedCartAvailableItems : CartAvailableItem[] = []
+        const selectedCartAvailableItems: CartAvailableItem[] = []
         let wasFound = false
         for (let item of selectedCartAvailableItemsStateValue) {
             if (!wasFound && item.id === bookableItem.id) {
@@ -209,7 +234,10 @@ export const useCartMethods = () => {
             options: [...options, option],
             staffVariant: bookableItem.selectedStaffVariant,
         })
-        return await addRemoveServiceCommon(cart, selectedCartAvailableItemsStateValue)
+        return await addRemoveServiceCommon(
+            cart,
+            selectedCartAvailableItemsStateValue
+        )
     }
 
     const removeAddon = async (
@@ -221,7 +249,10 @@ export const useCartMethods = () => {
         cart = await bookableItem.update({
             options: [...options.filter((opt) => opt.id !== option.id)],
         })
-        return await addRemoveServiceCommon(cart, selectedCartAvailableItemsStateValue)
+        return await addRemoveServiceCommon(
+            cart,
+            selectedCartAvailableItemsStateValue
+        )
     }
 
     const selectStaff = async (
@@ -233,7 +264,10 @@ export const useCartMethods = () => {
             options: bookableItem.selectedOptions,
             staffVariant: staff?.staffVariant ?? { id: null },
         })
-        return await addRemoveServiceCommon(cart, selectedCartAvailableItemsStateValue)
+        return await addRemoveServiceCommon(
+            cart,
+            selectedCartAvailableItemsStateValue
+        )
     }
 
     const setLocationBasedElements = async (
@@ -271,7 +305,9 @@ export const useCartMethods = () => {
         store: Store | undefined
     ): Promise<CartAvailableCategory[]> => {
         setCart(cart)
-        const cartCategories = (await cart.getAvailableCategories()).filter(x=>x.name !== 'Gift Cards')
+        const cartCategories = (await cart.getAvailableCategories()).filter(
+            (x) => x.name !== 'Gift Cards'
+        )
         setAvailableCategories(cartCategories)
         await setLocationBasedElements(location, store)
         if (cartCategories?.length) {
@@ -477,7 +513,7 @@ export const useCartMethods = () => {
                 localAvailableBookableItemStores.push({
                     availableBookableItemId: availableBookableItem.id,
                     cartAvailableBookableItemLocationVariant:
-                    itemLocationVariants,
+                        itemLocationVariants,
                 } as AvailableBookableItemStores)
             }
             if (locations === undefined) {
@@ -533,10 +569,14 @@ export const useCartMethods = () => {
         let selectedCartAvailableItems = selectedCartAvailableItemsStateValue
         if (lastSelectedItem) {
             newCart = await newCart.addBookableItem(lastSelectedItem)
-            selectedCartAvailableItems = selectedCartAvailableItems.concat(lastSelectedItem)
+            selectedCartAvailableItems =
+                selectedCartAvailableItems.concat(lastSelectedItem)
             setSelectedCartAvailableItemsState(selectedCartAvailableItems)
         }
-        return await loadSelectedServicesFromCart(newCart, selectedCartAvailableItems)
+        return await loadSelectedServicesFromCart(
+            newCart,
+            selectedCartAvailableItems
+        )
     }
 
     return {

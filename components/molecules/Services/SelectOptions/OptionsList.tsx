@@ -6,10 +6,11 @@ import { Box, Typography } from '@mui/material'
 import { useOptionsListStyles } from 'components/molecules/Services/SelectOptions/useStyles'
 import { Option } from 'components/molecules/Services/SelectOptions/Option'
 import React from 'react'
+import { CartBookableItem } from '@boulevard/blvd-book-sdk/lib/carts/items'
 
 export const OptionsList = () => {
     const classes = useOptionsListStyles()
-    const activeSelectedService = useActiveSelectedService()
+    const activeSelectedService = useActiveSelectedService() as CartBookableItem
     const optionGroups = activeSelectedService?.item?.optionGroups
     const options = optionGroups?.flatMap((x) => x.options)
     return (
@@ -23,9 +24,7 @@ export const OptionsList = () => {
             ))}
             {!options?.length && (
                 <Box className={classes.noOptionsAvailableWrapper}>
-                    <Typography>
-                        No options available
-                    </Typography>
+                    <Typography>No options available</Typography>
                 </Box>
             )}
         </Box>

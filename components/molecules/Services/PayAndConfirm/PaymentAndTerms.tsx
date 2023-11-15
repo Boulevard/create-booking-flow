@@ -26,7 +26,10 @@ export default function PaymentAndTerms() {
     const { isMobile } = useMobile()
     const { selectedServicesStateValue } = useSelectedServices()
     const { isCartAvailableBookableItem } = useCartMethods()
-    const hasServices = selectedServicesStateValue.filter(x=>isCartAvailableBookableItem(x.item)).length > 0
+    const hasServices =
+        selectedServicesStateValue.filter((x) =>
+            isCartAvailableBookableItem(x.item)
+        ).length > 0
     return (
         <Formik
             initialValues={{
@@ -58,23 +61,28 @@ export default function PaymentAndTerms() {
                     )
                     .required('Required'),
                 cvc: Yup.string().required('Required'),
+                addressPostalCode: Yup.string().required('Required'),
             })}
             onSubmit={(values) => onContinue(values)}
             validateOnChange
         >
-            {({handleSubmit}) => (
-                <Box sx={{
-                    padding: !isMobile ? theme.spacing(5, 1, 5, 8) : theme.spacing(0, 3, 3, 3),
-                    height: '100%',
-                    overflowY: 'scroll',
-                    position: 'sticky',
-                    '&::-webkit-scrollbar': {
-                        display: 'none',
-                    },
-                }}>
-                    {isMobile && <Services/>}
+            {({ handleSubmit }) => (
+                <Box
+                    sx={{
+                        padding: !isMobile
+                            ? theme.spacing(5, 1, 5, 8)
+                            : theme.spacing(0, 3, 3, 3),
+                        height: '100%',
+                        overflowY: 'scroll',
+                        position: 'sticky',
+                        '&::-webkit-scrollbar': {
+                            display: 'none',
+                        },
+                    }}
+                >
+                    {isMobile && <Services />}
                     <PaymentSummary />
-                    <PaymentInfo hasServices={hasServices}/>
+                    <PaymentInfo hasServices={hasServices} />
                     <Terms />
                     <Button
                         variant="contained"

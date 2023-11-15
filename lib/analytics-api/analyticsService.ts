@@ -16,7 +16,7 @@ export const useAnalyticsService = () => {
     ): Promise<void> => {
         Promise.all([
             gaAppointmentLocationSelected(
-                appointmentLocationSelected.location?.name
+                appointmentLocationSelected.location?.name as string
             ),
         ]).catch()
     }
@@ -25,7 +25,9 @@ export const useAnalyticsService = () => {
         appointmentTimeSelected: AppointmentTimeSelected
     ): Promise<void> => {
         Promise.all([
-            gaAppointmentTimeSelected(appointmentTimeSelected.location?.name),
+            gaAppointmentTimeSelected(
+                appointmentTimeSelected.location?.name as string
+            ),
         ]).catch()
     }
 

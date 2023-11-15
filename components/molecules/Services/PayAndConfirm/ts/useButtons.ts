@@ -14,6 +14,7 @@ import { useErrorMessageType } from 'lib/state/error'
 import { ErrorType } from 'lib/state/error/enums'
 import { LayoutContext } from 'components/atoms/layout/LayoutContext'
 import { Blvd } from 'lib/sdk/blvd'
+import { Card } from './types'
 
 export const useButtons = () => {
     const { setStep } = useFlowStep()
@@ -40,25 +41,32 @@ export const useButtons = () => {
         return Number(expirationDate.substring(3, 5))
     }
 
+    const getAddressPostalCode = (addressPostalCode: string) => {
+        return addressPostalCode.trim()
+    }
+
     const onContinue = async (values: FormikValues) => {
         layout.setIsShowLoader(true)
 
         try {
+            if (!cart) throw new Error('cart is missing, but required')
+
             layout.setIsShowLoader(true)
             let icsLink: string = ''
             try {
-                await cart?.addCardPaymentMethod({
-                    card: {
-                        name: getFormatedCardHoldersName(
-                            values.cardHoldersName
-                        ),
-                        number: getFormatedCardNumber(values.cardNumber),
-                        cvv: values.cvc,
-                        exp_month: getExpirationMonth(values.expirationDate),
-                        exp_year: getExpirationYear(values.expirationDate),
-                    },
-                })
-                const checkoutCartPayload = await cart?.checkout()
+                const card: Card = {
+                    name: getFormatedCardHoldersName(values.cardHoldersName),
+                    number: getFormatedCardNumber(values.cardNumber),
+                    cvv: values.cvc,
+                    exp_month: getExpirationMonth(values.expirationDate),
+                    exp_year: getExpirationYear(values.expirationDate),
+                    address_postal_code: getAddressPostalCode(
+                        values.addressPostalCode
+                    ),
+                }
+
+                await cart.addCardPaymentMethod({ card })
+                const checkoutCartPayload = await cart.checkout()
                 if (
                     checkoutCartPayload?.appointments &&
                     checkoutCartPayload?.appointments?.length > 0
@@ -67,7 +75,7 @@ export const useButtons = () => {
                         checkoutCartPayload?.appointments[0].appointmentId
                     const appointment = await Blvd.appointments.getFromCart(
                         appointmentId,
-                        cart?.id
+                        cart.id
                     )
                     icsLink = appointment?.calendarLinks?.icsDownload
                 }

@@ -13,7 +13,7 @@ import { SelectedButton } from 'components/molecules/Services/SelectOptions/Sele
 
 interface Props {
     option: CartAvailableBookableItemOption
-    bookableItem: CartBookableItem | undefined
+    bookableItem: CartBookableItem
 }
 export const Option = ({ option, bookableItem }: Props) => {
     const classes = useOption()
@@ -65,7 +65,7 @@ export const Option = ({ option, bookableItem }: Props) => {
             onSelectClick={addOption}
             btnName="Select"
             btnWidth={80}
-            description={option.description}
+            description={option.description as string | undefined}
             buttonComponent={
                 selected && <SelectedButton removeOption={removeOption} />
             }
