@@ -18,7 +18,7 @@
         "lint:fix": "prettier -w \"**/*.{js,ts,jsx,tsx}\""
     },
     "dependencies": {
-        "@boulevard/blvd-book-sdk": "^1.0.29",
+        "@boulevard/blvd-book-sdk": "^2.0.2",
         "@date-io/date-fns": "1.x",
         "@emotion/react": "^11.4.1",
         "@emotion/styled": "^11.3.0",
